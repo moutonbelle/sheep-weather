@@ -65,7 +65,61 @@ function parseWeather(weather) {
   return weatherObject;
 }
 
+function renderWeather(weather, target) {
+  let days = weather.days;
+
+  // Weather by hour for today
+  let todayDiv = target.querySelector('div.today');
+  todayDiv.replaceChildren();
+
+  let todayHeading = document.createElement('h3');
+  todayHeading.textContent = 'Today';
+  todayDiv.append(todayHeading);
+
+  let todayPara = document.createElement('p');
+  todayPara.textContent = `Date: ${days[0].date} Temp: ${days[0].temp} High: ${days[0].tempMax} Low: ${days[0].tempMin} Conditions: ${days[0].conditions}`;
+  todayDiv.append(todayPara);
+
+  weather.hoursToday.forEach((hour) => {
+    let hourPara = document.createElement('p');
+    hourPara.textContent = `Hour: ${parseInt(
+      hour.datetime.split(':')[0],
+      10
+    )} Temp: ${hour.temp} Conditions: ${hour.conditions}`;
+    todayDiv.append(hourPara);
+  });
+
+  // Weather by day for rest of week (next six days)
+  let restOfWeekDiv = target.querySelector('div.rest-of-week');
+  restOfWeekDiv.replaceChildren();
+
+  let restOfWeekHeading = document.createElement('h3');
+  restOfWeekHeading.textContent = 'Rest of the Week';
+  restOfWeekDiv.append(restOfWeekHeading);
+
+  for (let i = 1; i < 7; i++) {
+    let dayPara = document.createElement('p');
+    dayPara.textContent = `Date: ${days[i].date} Temp: ${days[i].temp} High: ${days[i].tempMax} Low: ${days[i].tempMin} Conditions: ${days[i].conditions}`;
+    restOfWeekDiv.append(dayPara);
+  }
+}
+
 getWeather('Austin').then((weather) => {
   globalThis.atxWeather = weather;
   globalThis.atxWeatherParsed = parseWeather(weather);
+  renderWeather(atxWeatherParsed, document.querySelector('div.hq'));
 });
+
+document
+  .querySelector('button#get-target-location')
+  .addEventListener('click', () => {
+    let loc = document.querySelector('input#target-location').value;
+    let locHeading = document.querySelector('div.target-location > h2');
+    locHeading.textContent = loc;
+    locHeading.classList.remove('hidden');
+    getWeather(loc)
+      .then((weather) => parseWeather(weather))
+      .then((weather) =>
+        renderWeather(weather, document.querySelector('div.target-location'))
+      );
+  });
