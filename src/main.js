@@ -1,4 +1,13 @@
-// Location => JSON of full result from weather API
+// TODO
+// -- Search for location
+// -- Toggle display in F or C
+// -- Rendering
+// -- Icons
+// -- Background based on weather
+
+import './styles.css';
+
+// Location string => JSON of full result from weather API
 async function getWeather(location) {
   let weatherURL =
     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/' +
