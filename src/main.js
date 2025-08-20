@@ -1,7 +1,6 @@
 // TODO
 // -- Rendering
 // -- Icons
-// -- Background based on weather
 
 import './styles.css';
 
