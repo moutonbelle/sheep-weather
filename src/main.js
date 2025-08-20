@@ -74,6 +74,15 @@ function dateDisplay(date) {
   return dateFormatter.format(dateObj);
 }
 
+function hourDisplay(hour) {
+  let output = '';
+  if (hour === 0) output = 'Midnight';
+  if (hour > 0 && hour < 12) output = hour + ' a.m.';
+  if (hour === 12) output = 'High Noon';
+  if (hour > 12) output = hour - 12 + ' p.m.';
+  return output;
+}
+
 // Parsed weather object => render on page
 function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
   let days = weather.days;
@@ -92,9 +101,8 @@ function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
 
   weather.hoursToday.forEach((hour) => {
     let hourPara = document.createElement('p');
-    hourPara.textContent = `Hour: ${parseInt(
-      hour.datetime.split(':')[0],
-      10
+    hourPara.textContent = `${hourDisplay(
+      parseInt(hour.datetime.split(':')[0], 10)
     )} ${tempUnits(hour.temp, settings.tempUnit)} ${hour.conditions}`;
     todayDiv.append(hourPara);
   });
