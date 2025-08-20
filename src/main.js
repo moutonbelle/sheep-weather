@@ -1,5 +1,4 @@
 // TODO
-// -- Search for location
 // -- Toggle display in F or C
 // -- Rendering
 // -- Icons
@@ -15,12 +14,6 @@ async function getWeather(location) {
     '?unitGroup=us&include=days%2Chours&key=R565NZRJHX8D3XBTNCCZ9ZKAW&contentType=json';
   let weather = await (await fetch(weatherURL)).json();
   return weather;
-}
-
-class Weather {
-  constructor(location) {
-    this.location = location;
-  }
 }
 
 // Full JSON from weather API => weather object containing fields we need
@@ -65,6 +58,7 @@ function parseWeather(weather) {
   return weatherObject;
 }
 
+// Parsed weather object => render on page
 function renderWeather(weather, target) {
   let days = weather.days;
 
