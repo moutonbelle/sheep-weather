@@ -1,5 +1,4 @@
 // TODO
-// -- Toggle display in F or C
 // -- Rendering
 // -- Icons
 // -- Background based on weather
@@ -58,8 +57,19 @@ function parseWeather(weather) {
   return weatherObject;
 }
 
+function round(num, places = 0) {
+  let scaler = 10 ** places;
+  return Math.round(num * scaler) / scaler;
+}
+
+function tempUnits(temp, tempUnit) {
+  if (tempUnit === 'celsius')
+    return round((parseFloat(temp) - 32) * (5 / 9), 1) + '°C';
+  else return temp + '°F';
+}
+
 // Parsed weather object => render on page
-function renderWeather(weather, target) {
+function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
   let days = weather.days;
 
   // Weather by hour for today
@@ -71,7 +81,7 @@ function renderWeather(weather, target) {
   todayDiv.append(todayHeading);
 
   let todayPara = document.createElement('p');
-  todayPara.textContent = `Date: ${days[0].date} Temp: ${days[0].temp} High: ${days[0].tempMax} Low: ${days[0].tempMin} Conditions: ${days[0].conditions}`;
+  todayPara.textContent = `Date: ${days[0].date} Temp: ${tempUnits(days[0].temp, settings.tempUnit)} High: ${tempUnits(days[0].tempMax, settings.tempUnit)} Low: ${tempUnits(days[0].tempMin, settings.tempUnit)} Conditions: ${days[0].conditions}`;
   todayDiv.append(todayPara);
 
   weather.hoursToday.forEach((hour) => {
@@ -79,7 +89,7 @@ function renderWeather(weather, target) {
     hourPara.textContent = `Hour: ${parseInt(
       hour.datetime.split(':')[0],
       10
-    )} Temp: ${hour.temp} Conditions: ${hour.conditions}`;
+    )} Temp: ${tempUnits(hour.temp, settings.tempUnit)} Conditions: ${hour.conditions}`;
     todayDiv.append(hourPara);
   });
 
@@ -93,14 +103,16 @@ function renderWeather(weather, target) {
 
   for (let i = 1; i < 7; i++) {
     let dayPara = document.createElement('p');
-    dayPara.textContent = `Date: ${days[i].date} Temp: ${days[i].temp} High: ${days[i].tempMax} Low: ${days[i].tempMin} Conditions: ${days[i].conditions}`;
+    dayPara.textContent = `Date: ${days[i].date} Temp: ${tempUnits(days[i].temp, settings.tempUnit)} High: ${tempUnits(days[i].tempMax, settings.tempUnit)} Low: ${tempUnits(days[i].tempMin, settings.tempUnit)} Conditions: ${days[i].conditions}`;
     restOfWeekDiv.append(dayPara);
   }
 }
 
+let tempUnit = 'fahrenheit';
+let remoteWeatherParsed, atxWeatherParsed;
+
 getWeather('Austin').then((weather) => {
-  globalThis.atxWeather = weather;
-  globalThis.atxWeatherParsed = parseWeather(weather);
+  atxWeatherParsed = parseWeather(weather);
   renderWeather(atxWeatherParsed, document.querySelector('div.hq'));
 });
 
@@ -113,10 +125,25 @@ document
     locHeading.classList.remove('hidden');
     getWeather(loc)
       .then((weather) => {
-        globalThis.remoteWeatherParsed = parseWeather(weather);
-        return globalThis.remoteWeatherParsed;
+        remoteWeatherParsed = parseWeather(weather);
+        return remoteWeatherParsed;
       })
       .then((weather) =>
         renderWeather(weather, document.querySelector('div.target-location'))
       );
   });
+
+document.querySelector('div#temp-units').addEventListener('change', (e) => {
+  let selectedUnit = e.target.closest('label').id;
+  if (selectedUnit === tempUnit) return;
+  tempUnit = selectedUnit;
+  renderWeather(atxWeatherParsed, document.querySelector('div.hq'), {
+    tempUnit: selectedUnit,
+  });
+  if (remoteWeatherParsed)
+    renderWeather(
+      remoteWeatherParsed,
+      document.querySelector('div.target-location'),
+      { tempUnit: selectedUnit }
+    );
+});
