@@ -6,25 +6,31 @@
     <title>Weather</title>
   </head>
   <body>
-    <h1>Sheep Weather</h1>
+    <div class="header">
+      <h1>Sheep Weather</h1>
 
-    <div class="settings">
-      <div id="temp-units">
-        <label id="fahrenheit"
-          ><input
-            type="radio"
-            name="temp-unit"
-            value="fahrenheit"
-            checked
-          />Fahrenheit</label
-        >
-        <label id="celsius"
-          ><input type="radio" name="temp-unit" value="celsius" />Celsius</label
-        >
+      <div class="settings">
+        <div id="temp-units">
+          <label id="fahrenheit"
+            ><input
+              type="radio"
+              name="temp-unit"
+              value="fahrenheit"
+              checked
+            />Fahrenheit</label
+          >
+          <label id="celsius"
+            ><input
+              type="radio"
+              name="temp-unit"
+              value="celsius"
+            />Celsius</label
+          >
+        </div>
       </div>
     </div>
 
-    <div class="hq weather bg-rain">
+    <div class="hq weather">
       <h2>Sheep HQ: Austin, Texas</h2>
       <div class="today"></div>
       <div class="rest-of-week"></div>

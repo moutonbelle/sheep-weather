@@ -6,6 +6,7 @@
 
 body {
   padding: 20px;
+  line-height: 1.5rem;
 }
 
 .hidden {
@@ -20,10 +21,10 @@ h2:not(:first-child) {
   margin-top: 20px;
 }
 
-div.settings {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+div.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 div#temp-units > label {
@@ -69,4 +70,322 @@ input:focus {
 
 button:focus {
   outline: none;
+}
+
+.bg-clear-day {
+  /* palette */
+  --sky-top: #9bd6ff;
+  --sky-bot: #4facfe;
+  --sun-core: #ffd166;
+  --sun-edge: #ffae3d;
+
+  /* layered gradients: sun glint + sun + sky */
+  background-image:
+    radial-gradient(circle at 78% 22%, #ffffff66 0 22%, transparent 24% 100%),
+    radial-gradient(
+      90px 90px at 80% 20%,
+      var(--sun-core) 0 55%,
+      var(--sun-edge) 56% 70%,
+      transparent 72% 100%
+    ),
+    linear-gradient(180deg, var(--sky-top), var(--sky-bot));
+}
+
+/* clear-night background */
+.bg-clear-night {
+  /* palette */
+  --sky-top: #0f2027;
+  --sky-mid: #203a43;
+  --sky-bot: #2c5364;
+  --moon-core: #fff6da;
+  --moon-rim: #d9e0ff;
+
+  /* stars + moon + sky */
+  background-image:
+    /* small stars */
+    radial-gradient(1px 1px at 18% 22%, #ffffffaa 99%, transparent 0),
+    radial-gradient(1px 1px at 35% 38%, #ffffff88 99%, transparent 0),
+    radial-gradient(1px 1px at 62% 17%, #ffffffaa 99%, transparent 0),
+    radial-gradient(1px 1px at 78% 42%, #ffffff99 99%, transparent 0),
+    radial-gradient(1px 1px at 52% 66%, #ffffff88 99%, transparent 0),
+    radial-gradient(1px 1px at 85% 73%, #ffffff99 99%, transparent 0),
+    /* moon glow */
+      radial-gradient(
+        80px 80px at 80% 20%,
+        #ffffff33 0 40%,
+        transparent 42% 100%
+      ),
+    /* moon disc */
+      radial-gradient(
+        70px 70px at 80% 20%,
+        var(--moon-core) 0 60%,
+        var(--moon-rim) 62% 75%,
+        transparent 76% 100%
+      ),
+    /* sky */ linear-gradient(180deg, var(--sky-top), var(--sky-bot));
+
+  color: #f5f7ff; /* readable text on dark bg */
+  background-size: cover;
+  background-position: center;
+}
+
+/* partly-cloudy (day) */
+.bg-partly-cloudy-day {
+  /* palette */
+  --sky-top: #b9e6ff;
+  --sky-bot: #5bb4ff;
+  --sun-core: #ffd166;
+  --sun-rim: #ffae3d;
+  --cloud-1: #ffffffee;
+  --cloud-2: #ffffffcc;
+
+  /* clouds + sun + sky */
+  background-image:
+    /* sun glow + disc (top-right) */
+    radial-gradient(
+      80px 80px at 80% 20%,
+      #ffffff55 0 40%,
+      transparent 42% 100%
+    ),
+    radial-gradient(
+      70px 70px at 80% 20%,
+      var(--sun-core) 0 60%,
+      var(--sun-rim) 62% 75%,
+      transparent 76% 100%
+    ),
+    /* cloud group 1 */
+      radial-gradient(
+        155px 98px at 44% 34%,
+        var(--cloud-1) 0 66%,
+        transparent 68%
+      ),
+    radial-gradient(
+      45px 28px at 60% 36%,
+      var(--cloud-2) 0 70%,
+      transparent 72%
+    ),
+    /* cloud group 2 */
+      radial-gradient(
+        65px 40px at 44% 58%,
+        var(--cloud-1) 0 66%,
+        transparent 68%
+      ),
+    radial-gradient(
+      100px 60px at 57% 60%,
+      var(--cloud-2) 0 70%,
+      transparent 72%
+    ),
+    /* sky */ linear-gradient(180deg, var(--sky-top), var(--sky-bot));
+
+  color: #1e2a3a; /* readable text on bright bg */
+  background-size: cover;
+  background-position: center;
+}
+
+/* partly-cloudy (night) */
+.bg-partly-cloudy-night {
+  /* palette */
+  --sky-top: #0f2027;
+  --sky-mid: #203a43;
+  --sky-bot: #2c5364;
+  --moon-core: #fff6da;
+  --moon-rim: #d9e0ff;
+  --cloud-1: #ffffffee;
+  --cloud-2: #ffffffbb;
+
+  /* clouds (topmost) + moon + stars + sky */
+  background-image:
+    /* cloud cluster near moon (right) */
+    radial-gradient(
+      55px 35px at 62% 26%,
+      var(--cloud-1) 0 66%,
+      transparent 68%
+    ),
+    radial-gradient(
+      65px 42px at 52% 28%,
+      var(--cloud-2) 0 70%,
+      transparent 72%
+    ),
+    /* cloud cluster (lower-left) */
+      radial-gradient(
+        65px 40px at 48% 58%,
+        var(--cloud-1) 0 66%,
+        transparent 68%
+      ),
+    radial-gradient(
+      100px 60px at 60% 60%,
+      var(--cloud-2) 0 70%,
+      transparent 72%
+    ),
+    /* moon glow + disc (behind clouds) */
+      radial-gradient(
+        80px 80px at 80% 22%,
+        #ffffff2a 0 40%,
+        transparent 42% 100%
+      ),
+    radial-gradient(
+      70px 70px at 80% 22%,
+      var(--moon-core) 0 60%,
+      var(--moon-rim) 62% 75%,
+      transparent 76% 100%
+    ),
+    /* starfield (subtle) */
+      radial-gradient(1px 1px at 18% 22%, #ffffffaa 99%, transparent 0),
+    radial-gradient(1px 1px at 35% 38%, #ffffff88 99%, transparent 0),
+    radial-gradient(1px 1px at 62% 17%, #ffffffaa 99%, transparent 0),
+    radial-gradient(1px 1px at 78% 42%, #ffffff99 99%, transparent 0),
+    radial-gradient(1px 1px at 52% 66%, #ffffff88 99%, transparent 0),
+    radial-gradient(1px 1px at 85% 73%, #ffffff99 99%, transparent 0),
+    /* sky */ linear-gradient(180deg, var(--sky-top), var(--sky-bot));
+
+  color: #f5f7ff;
+  background-size: cover;
+  background-position: center;
+}
+
+/* cloudy */
+.bg-cloudy {
+  /* palette */
+  --sky-top: #cfd6df; /* light gray-blue */
+  --sky-bot: #7f8c98; /* deeper gray-blue */
+  --cloud-hi: #ffffffee; /* brighter puffs */
+  --cloud-lo: #ffffffbb; /* softer puffs */
+
+  /* multiple cloud layers + sky */
+  background-image:
+    /* upper cloud band */
+    radial-gradient(
+      70px 40px at 24% 26%,
+      var(--cloud-hi) 0 70%,
+      transparent 72%
+    ),
+    radial-gradient(
+      85px 45px at 40% 28%,
+      var(--cloud-lo) 0 70%,
+      transparent 72%
+    ),
+    radial-gradient(
+      90px 50px at 62% 32%,
+      var(--cloud-hi) 0 70%,
+      transparent 72%
+    ),
+    radial-gradient(
+      75px 42px at 78% 30%,
+      var(--cloud-lo) 0 70%,
+      transparent 72%
+    ),
+    /* lower cloud band */
+      radial-gradient(
+        110px 56px at 28% 60%,
+        var(--cloud-hi) 0 70%,
+        transparent 72%
+      ),
+    radial-gradient(
+      95px 50px at 52% 62%,
+      var(--cloud-lo) 0 70%,
+      transparent 72%
+    ),
+    radial-gradient(
+      105px 54px at 78% 58%,
+      var(--cloud-hi) 0 70%,
+      transparent 72%
+    ),
+    /* sky */ linear-gradient(180deg, var(--sky-top), var(--sky-bot));
+
+  color: #1e2a3a; /* readable text on mid-tone sky */
+  background-size: cover;
+  background-position: center;
+}
+
+/* wind */
+.bg-wind {
+  /* palette */
+  --sky-a: #74ebd5; /* teal */
+  --sky-b: #acb6e5; /* soft blue */
+  --line1: #ffffff80; /* 50% */
+  --line2: #ffffff4d; /* 30% */
+  --line3: #ffffff26; /* 15% */
+
+  /* layered flow lines + sky */
+  background-image:
+    /* close lines */
+    repeating-linear-gradient(90deg, var(--line1) 0 2px, transparent 2px 18px),
+    /* mid lines (offset) */
+      repeating-linear-gradient(
+        90deg,
+        var(--line2) 8px 10px,
+        transparent 10px 28px
+      ),
+    /* far lines (wider spacing) */
+      repeating-linear-gradient(
+        90deg,
+        var(--line3) 4px 5px,
+        transparent 5px 34px
+      ),
+    /* sky */ linear-gradient(135deg, var(--sky-a), var(--sky-b));
+
+  color: #1e2a3a;
+  background-size: cover;
+  background-position: center;
+  /* optional subtle rounding/shadow if you use a base card */
+
+  animation: wind-slide 8s linear infinite;
+}
+
+@keyframes wind-slide {
+  to {
+    background-position:
+      140px 0,
+      -160px 0,
+      220px 0,
+      0 0;
+  }
+}
+
+.bg-rain {
+  background: url('./images/rain.png') no-repeat center/cover;
+  color: white;
+}
+
+.bg-snow {
+  background: url('./images/snow.png') no-repeat center/cover;
+}
+
+/* realistic fog */
+.bg-fog {
+  position: relative;
+  overflow: hidden;
+  color: #1e2a3a;
+  /* cool gray sky base */
+  background: linear-gradient(180deg, #cfd6df, #aab6c3);
+}
+
+/* big soft fog banks */
+.bg-fog::before {
+  content: '';
+  position: absolute;
+  inset: -30% -35%;
+  background:
+    radial-gradient(
+      60% 38% at 25% 72%,
+      rgba(255, 255, 255, 0.3) 0 60%,
+      transparent 62%
+    ),
+    radial-gradient(
+      62% 40% at 58% 84%,
+      rgba(255, 255, 255, 0.4) 0 60%,
+      transparent 62%
+    ),
+    radial-gradient(
+      55% 35% at 82% 68%,
+      rgba(255, 255, 255, 0.45) 0 60%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.55),
+      rgba(255, 255, 255, 0.18) 65%,
+      rgba(255, 255, 255, 0)
+    );
+  filter: blur(12px);
 }
