@@ -112,7 +112,10 @@ document
     locHeading.textContent = loc;
     locHeading.classList.remove('hidden');
     getWeather(loc)
-      .then((weather) => parseWeather(weather))
+      .then((weather) => {
+        globalThis.remoteWeatherParsed = parseWeather(weather);
+        return globalThis.remoteWeatherParsed;
+      })
       .then((weather) =>
         renderWeather(weather, document.querySelector('div.target-location'))
       );
