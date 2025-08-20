@@ -68,6 +68,12 @@ function tempUnits(temp, tempUnit) {
   else return temp + '°F';
 }
 
+function dateDisplay(date) {
+  let [year, month, day] = date.split('-');
+  let dateObj = new Date(year, month, day);
+  return dateFormatter.format(dateObj);
+}
+
 // Parsed weather object => render on page
 function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
   let days = weather.days;
@@ -81,7 +87,7 @@ function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
   todayDiv.append(todayHeading);
 
   let todayPara = document.createElement('p');
-  todayPara.textContent = `Date: ${days[0].date} Temp: ${tempUnits(days[0].temp, settings.tempUnit)} High: ${tempUnits(days[0].tempMax, settings.tempUnit)} Low: ${tempUnits(days[0].tempMin, settings.tempUnit)} Conditions: ${days[0].conditions}`;
+  todayPara.textContent = `${dateDisplay(days[0].date)} High: ${tempUnits(days[0].tempMax, settings.tempUnit)} Low: ${tempUnits(days[0].tempMin, settings.tempUnit)} ${days[0].description}`;
   todayDiv.append(todayPara);
 
   weather.hoursToday.forEach((hour) => {
@@ -89,7 +95,7 @@ function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
     hourPara.textContent = `Hour: ${parseInt(
       hour.datetime.split(':')[0],
       10
-    )} Temp: ${tempUnits(hour.temp, settings.tempUnit)} Conditions: ${hour.conditions}`;
+    )} ${tempUnits(hour.temp, settings.tempUnit)} ${hour.conditions}`;
     todayDiv.append(hourPara);
   });
 
@@ -103,13 +109,18 @@ function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
 
   for (let i = 1; i < 7; i++) {
     let dayPara = document.createElement('p');
-    dayPara.textContent = `Date: ${days[i].date} Temp: ${tempUnits(days[i].temp, settings.tempUnit)} High: ${tempUnits(days[i].tempMax, settings.tempUnit)} Low: ${tempUnits(days[i].tempMin, settings.tempUnit)} Conditions: ${days[i].conditions}`;
+    dayPara.textContent = `${dateDisplay(days[i].date)} High: ${tempUnits(days[i].tempMax, settings.tempUnit)} Low: ${tempUnits(days[i].tempMin, settings.tempUnit)} ${days[i].description}`;
     restOfWeekDiv.append(dayPara);
   }
 }
 
 let tempUnit = 'fahrenheit';
 let remoteWeatherParsed, atxWeatherParsed;
+let dateFormatter = new Intl.DateTimeFormat('en-US', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+});
 
 getWeather('Austin').then((weather) => {
   atxWeatherParsed = parseWeather(weather);
