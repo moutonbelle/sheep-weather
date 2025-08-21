@@ -64,7 +64,7 @@ function round(num, places = 0) {
 function tempUnits(temp, tempUnit) {
   if (tempUnit === 'celsius')
     return round((parseFloat(temp) - 32) * (5 / 9), 1) + '°C';
-  else return temp + '°F';
+  else return round(temp, 0) + '°F';
 }
 
 function dateDisplay(date) {
