@@ -99,6 +99,10 @@ function renderWeather(weather, target, settings = { tempUnit: 'fahrenheit' }) {
   todayPara.textContent = `${dateDisplay(days[0].date)} High: ${tempUnits(days[0].tempMax, settings.tempUnit)} Low: ${tempUnits(days[0].tempMin, settings.tempUnit)} ${days[0].description}`;
   todayDiv.append(todayPara);
 
+  target.className = target.className
+    .split(/\s+/)
+    .filter((c) => !/^bg-/.test(c))
+    .join(' ');
   target.classList.add(`bg-${days[0].icon}`);
 
   weather.hoursToday.forEach((hour) => {
